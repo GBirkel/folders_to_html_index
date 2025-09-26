@@ -33,6 +33,7 @@ import subprocess
 from datetime import *
 from common_utils import *
 from file_database import *
+import json
 
 
 def take_inventory(verbose=False):
@@ -191,6 +192,30 @@ def take_inventory(verbose=False):
         folders_processed_count += 1
 
         folder_record = get_one_unscanned_folder(cur)
+
+    print("\nExporting to JSON")
+
+    all_cards = get_all_cards(cur)
+    all_folders = get_all_folders(cur, verbose)
+    all_files = get_all_files(cur)
+
+    with open(os.path.join('browser', 'card_data.js'), 'w', encoding='utf-8') as f:
+        f.write('// This file is generated automatically by inventory.py.\n\n')
+        f.write('const card_data = ')
+        json.dump(all_cards, f, indent=2)
+        f.write(';\n')
+
+    with open(os.path.join('browser', 'folder_data.js'), 'w', encoding='utf-8') as f:
+        f.write('// This file is generated automatically by inventory.py.\n\n')
+        f.write('const folder_data = ')
+        json.dump(all_folders, f, indent=2)
+        f.write(';\n')
+
+    with open(os.path.join('browser', 'file_data.js'), 'w', encoding='utf-8') as f:
+        f.write('// This file is generated automatically by inventory.py.\n\n')
+        f.write('const file_data = ')
+        json.dump(all_files, f, indent=2)
+        f.write(';\n')
 
     finish_with_database(conn, cur)
     os._exit(0)
