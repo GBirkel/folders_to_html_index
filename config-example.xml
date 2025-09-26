@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<sdinventory>
+    <installpath>/path/to/this/script</installpath>
+    <cardpaths>
+        <path>/Volumes/sd_card_1/</path>
+        <path>/Volumes/sd_card_2/</path>
+    </cardpaths>
+</sdinventory>
